@@ -1,12 +1,8 @@
 **Sommaire**
 
 [Introduction](../README.md)  
-[1. Création du réseau](partie-1.md)  
-[2. Création des security groups](partie-2.md)  
-[3. Création du cluster memcached](partie-3.md)  
-[4. Création de l'auto scaling group](partie-4.md)  
-[5. Création du load balancer](partie-5.md)  
-6\. Test de l'application
+[1. Création de l'infrastructure](partie-1.md)   
+2\. Test de l'application
 
 # TEST DE L'APPLICATION
 

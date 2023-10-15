@@ -1,92 +1,54 @@
-# hard
+# CREATION D'UNE INFRASTRUCTURE COMPLEXE AVEC TERRAFORM
 
+**Sommaire**
 
+Introduction  
+[1. Création de l'infrastructure](pages/partie-1.md)  
+[2. Test de l'application](pages/partie-2.md)   
 
-## Getting started
+## Introduction
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+L'objectif de ce lab est de créer une infrastructure complexe sur AWS avec **Terraform**.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+### L'infrastructure
 
-## Add your files
+L'architecture de l'infrastructure est la suivante :
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+<p align="left">
+<img src="img/infrastructure.jpg"/>
+</p>
 
-```
-cd existing_repo
-git remote add origin https://gitlab.com/thenuumfactory/biglab/hard.git
-git branch -M main
-git push -uf origin main
-```
+Dans cette architecture, nous retrouvons les éléments suivants :
 
-## Integrate with your tools
+- Un VPC hébergé dans une région qui vous sera attribuée
+- 2 sous-réseaux publics répartis dans les availability zone A et B
+- 4 sous-réseaux privés répartis dans les availability zone A et B
+- Une internet gateway pour gérer le traffic entre l'extérieur et les sous-réseaux publics
+- Une NAT gateway dans chaque sous-réseau public pour gérer les flux sortants des sous-réseaux privés 1 et 2
+- Un load-balancer pour répartir les requêtes HTTP en provenance de l'extérieur vers les instances EC2 de l'auto-scaling group
+- Un auto-scaling group dont les instances EC2 qui hébergent l'application web sont réparties sur les sous-réseaux privés 1 et 2.
+- Un cluster memcached pour la gestion des sessions utilisateurs, composé de 2 noeuds répartis sur les sous-réseaux privés 3 et 4.
 
-- [ ] [Set up project integrations](https://gitlab.com/thenuumfactory/biglab/hard/-/settings/integrations)
+Cette architecture hébergera une application web basique qui sera installée sur les serveurs au travers d'user datas.
 
-## Collaborate with your team
+Vous trouverez ci-dessous les **régions** et **adresses de sous-réseaux** que vous devrez utiliser :
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+| NOM                   | PRENOM          | REGION       | VPC          | PUBLIC SUBNET 1 | PUBLIC SUBNET 2 | PRIVATE SUBNET 1 | PRIVATE SUBNET 2 | PRIVATE SUBNET 3 | PRIVATE SUBNET 4 |
+|-----------------------|-----------------|--------------|--------------|-----------------|-----------------|------------------|------------------|------------------|------------------|
+| AIT   BARA            | Abdelatif       | eu-west-1    | 30.0.0.0/16  | 30.0.1.0/24     | 30.0.2.0/24     | 30.0.3.0/24      | 30.0.4.0/24      | 30.0.5.0/24      | 30.0.6.0/24      |
+| ANTONYAN              | Tigran          | eu-west-1    | 40.0.0.0/16  | 40.0.1.0/24     | 40.0.2.0/24     | 40.0.3.0/24      | 40.0.4.0/24      | 40.0.5.0/24      | 40.0.6.0/24      |
+| BEN   AHMED           | Yousri          | eu-west-2    | 50.0.0.0/16  | 50.0.1.0/24     | 50.0.2.0/24     | 50.0.3.0/24      | 50.0.4.0/24      | 50.0.5.0/24      | 50.0.6.0/24      |
+| BEN   HAMIDA          | Yacine          | eu-west-2    | 60.0.0.0/16  | 60.0.1.0/24     | 60.0.2.0/24     | 60.0.3.0/24      | 60.0.4.0/24      | 60.0.5.0/24      | 60.0.6.0/24      |
+| BENKHEIRA             | Yousra          | eu-central-1 | 70.0.0.0/16  | 70.0.1.0/24     | 70.0.2.0/24     | 70.0.3.0/24      | 70.0.4.0/24      | 70.0.5.0/24      | 70.0.6.0/24      |
+| BILLERACH             | Kevin           | eu-central-1 | 80.0.0.0/16  | 80.0.1.0/24     | 80.0.2.0/24     | 80.0.3.0/24      | 80.0.4.0/24      | 80.0.5.0/24      | 80.0.6.0/24      |
+| CHAABANI              | Haythem         | eu-north-1   | 90.0.0.0/16  | 90.0.1.0/24     | 90.0.2.0/24     | 90.0.3.0/24      | 90.0.4.0/24      | 90.0.5.0/24      | 90.0.6.0/24      |
+| DOS   SANTOS FERREIRA | Jorge           | eu-north-1   | 100.0.0.0/16 | 100.0.1.0/24    | 100.0.2.0/24    | 100.0.3.0/24     | 100.0.4.0/24     | 100.0.5.0/24     | 100.0.6.0/24     |
+| DUFETRE               | Christophe      | ca-central-1 | 110.0.0.0/16 | 110.0.1.0/24    | 110.0.2.0/24    | 110.0.3.0/24     | 110.0.4.0/24     | 110.0.5.0/24     | 110.0.6.0/24     |
+| HAIDARI               | Nassim          | ca-central-1 | 120.0.0.0/16 | 120.0.1.0/24    | 120.0.2.0/24    | 120.0.3.0/24     | 120.0.4.0/24     | 120.0.5.0/24     | 120.0.6.0/24     |
+| HASSAN                | Hadi            | us-east-1    | 130.0.0.0/16 | 130.0.1.0/24    | 130.0.2.0/24    | 130.0.3.0/24     | 130.0.4.0/24     | 130.0.5.0/24     | 130.0.6.0/24     |
+| KAMELI                | Karim           | us-east-1    | 140.0.0.0/16 | 140.0.1.0/24    | 140.0.2.0/24    | 140.0.3.0/24     | 140.0.4.0/24     | 140.0.5.0/24     | 140.0.6.0/24     |
+| LINDOU                | Arouna          | ap-south-1   | 150.0.0.0/16 | 150.0.1.0/24    | 150.0.2.0/24    | 150.0.3.0/24     | 150.0.4.0/24     | 150.0.5.0/24     | 150.0.6.0/24     |
+| MIANTSOKO             | Giovani Destall | ap-south-1   | 160.0.0.0/16 | 160.0.1.0/24    | 160.0.2.0/24    | 160.0.3.0/24     | 160.0.4.0/24     | 160.0.5.0/24     | 160.0.6.0/24     |
+| RAMDANE               | Amine           | sa-east-1    | 170.0.0.0/16 | 170.0.1.0/24    | 170.0.2.0/24    | 170.0.3.0/24     | 170.0.4.0/24     | 170.0.5.0/24     | 170.0.6.0/24     |
+| SAFI                  | Choukri         | sa-east-1    | 180.0.0.0/16 | 180.0.1.0/24    | 180.0.2.0/24    | 180.0.3.0/24     | 180.0.4.0/24     | 180.0.5.0/24     | 180.0.6.0/24     |
+| VALLA                 | Jonathan        | eu-west-3    | 190.0.0.0/16 | 190.0.1.0/24    | 190.0.2.0/24    | 190.0.3.0/24     | 190.0.4.0/24     | 190.0.5.0/24     | 190.0.6.0/24     |

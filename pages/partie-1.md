@@ -6,7 +6,9 @@
 
 # CREATION DE L'INFRASTRUCTURE
 
-A l'aide de terraform, créez l'infrastructure décrite dans le schéma en introduction avec les caractéristiques suivantes (votre tfstate sera stocké dans le bucket **nuumfactory-terraform-backend** et s'appellera terraform-biglab-XX en remplaçant XX par votre digit) :
+A l'aide de terraform, créez l'infrastructure décrite dans le schéma en introduction avec les caractéristiques suivantes (votre tfstate sera stocké dans le bucket **nuumfactory-terraform-backend** et s'appellera terraform-biglab-XX en remplaçant XX par votre digit).
+
+Remplacez \<environnement\> par le trigramme d'environnement de votre choix (dev, rec, qal, etc...) :
 
 **Internet gateway**
 

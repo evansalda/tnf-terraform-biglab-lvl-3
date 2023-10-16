@@ -55,7 +55,7 @@ Remplacez \<environnement\> par le trigramme d'environnement de votre choix (dev
 
 **Auto scaling group**
 
-- AMI : ami-0f15e0a4c8d3ee5fe
+- AMI : L'AMI Amazon Linux 2 la plus récente
 - Type d'instance : t3.micro
 - Associer une adresse IP publique aux EC2
 - Chaque EC2 devra avoir un tag Name avec pour valeur nuumfactory-biglab-\<environnement\>-ec2-\<digit\>
